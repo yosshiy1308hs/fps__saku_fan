@@ -16,6 +16,7 @@ const commentBox = document.getElementById("comment-box");
 const submitBtn = document.getElementById("submit-btn");
 const prevBtn = document.getElementById("prev-btn");
 const nextBtn = document.getElementById("next-btn");
+const pageNumber = document.getElementById("page-number");
 
 let comments = []; // 全コメントを格納
 let currentPage = 1;
@@ -45,6 +46,12 @@ function renderComments() {
     });
 
     updatePaginationButtons();
+    updatePageNumber(); // ページ番号を更新
+}
+
+// ページ番号を更新
+function updatePageNumber() {
+    pageNumber.textContent = currentPage;
 }
 
 // ページングボタンの状態を更新
