@@ -18,6 +18,7 @@ div {
     max-width: 400px;
     width: 100%;
     text-align: center;
+    box-sizing: border-box; /* 修正: padding を含めた幅の計算を行う */
 }
 
 h1 {
@@ -71,6 +72,8 @@ ul li {
     display: flex;
     justify-content: center;
     margin-top: 10px;
+    width: 100%; /* 修正: 親要素の幅に収まるように設定 */
+    box-sizing: border-box; /* 修正: padding を含めた幅の計算を行う */
 }
 
 #pagination button {
