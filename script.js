@@ -11,14 +11,60 @@ document.getElementById("star-btn").addEventListener("click", () => {
     document.getElementById("star-count").textContent = starCount;
 });
 
-document.getElementById("submit-btn").addEventListener("click", () => {
-    const comment = document.getElementById("comment-box").value;
-    const commentList = document.getElementById("comments-list");
+const commentsList = document.getElementById("comments-list");
+const commentBox = document.getElementById("comment-box");
+const submitBtn = document.getElementById("submit-btn");
+const prevBtn = document.getElementById("prev-btn");
+const nextBtn = document.getElementById("next-btn");
 
-    if (comment.trim() !== "") {
-        const listItem = document.createElement("li");
-        listItem.textContent = comment;
-        commentList.appendChild(listItem);
-        document.getElementById("comment-box").value = "";
+let comments = []; // 全コメントを格納
+let currentPage = 1;
+const commentsPerPage = 5; // 1ページに表示するコメント数
+
+// コメントを追加
+submitBtn.addEventListener("click", () => {
+    const comment = commentBox.value.trim();
+    if (comment) {
+        comments.push(comment);
+        commentBox.value = "";
+        renderComments();
+    }
+});
+
+// コメントをレンダリング
+function renderComments() {
+    commentsList.innerHTML = ""; // 現在のコメントをクリア
+    const startIndex = (currentPage - 1) * commentsPerPage;
+    const endIndex = startIndex + commentsPerPage;
+    const currentComments = comments.slice(startIndex, endIndex);
+
+    currentComments.forEach((comment) => {
+        const li = document.createElement("li");
+        li.textContent = comment;
+        commentsList.appendChild(li);
+    });
+
+    updatePaginationButtons();
+}
+
+// ページングボタンの状態を更新
+function updatePaginationButtons() {
+    prevBtn.disabled = currentPage === 1;
+    nextBtn.disabled = currentPage * commentsPerPage >= comments.length;
+}
+
+// 前のページ
+prevBtn.addEventListener("click", () => {
+    if (currentPage > 1) {
+        currentPage--;
+        renderComments();
+    }
+});
+
+// 次のページ
+nextBtn.addEventListener("click", () => {
+    if (currentPage * commentsPerPage < comments.length) {
+        currentPage++;
+        renderComments();
     }
 });
