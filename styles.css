@@ -50,6 +50,7 @@ textarea {
     border: 1px solid #ccc;
     border-radius: 4px;
     resize: none;
+    box-sizing: border-box; /* 修正: padding を含めた幅の計算を行う */
 }
 
 ul {
