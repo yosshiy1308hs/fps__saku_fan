@@ -1,21 +1,11 @@
 import { createClient } from '@supabase/supabase-js';
 
 const supabaseUrl = 'https://uiguxlwkoaclvugqwomw.supabase.co';
-const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVpZ3V4bHdrb2FjbHZ1Z3F3b213Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDU4MzM1NTAsImV4cCI6MjA2MTQwOTU1MH0.0Uz4BbXvOWCx8EHxN6whml3GprdYLeTpVevB6pM3fBk';
+const supabaseKey = 'your-anon-key';
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 let heartCount = 0;
 let starCount = 0;
-
-document.getElementById("heart-btn").addEventListener("click", () => {
-    heartCount++;
-    document.getElementById("heart-count").textContent = heartCount;
-});
-
-document.getElementById("star-btn").addEventListener("click", () => {
-    starCount++;
-    document.getElementById("star-count").textContent = starCount;
-});
 
 const commentsList = document.getElementById("comments-list");
 const commentBox = document.getElementById("comment-box");
@@ -24,9 +14,58 @@ const prevBtn = document.getElementById("prev-btn");
 const nextBtn = document.getElementById("next-btn");
 const pageNumber = document.getElementById("page-number");
 
-let comments = []; // 全コメントを格納
+let comments = [];
 let currentPage = 1;
-const commentsPerPage = 5; // 1ページに表示するコメント数
+const commentsPerPage = 5;
+
+// ボタン押下回数を取得
+async function fetchButtonCounts() {
+    const { data, error } = await supabase
+        .from('button_counts')
+        .select('*');
+
+    if (error) {
+        console.error(error);
+    } else {
+        data.forEach(button => {
+            if (button.button_name === 'heart') {
+                heartCount = button.count;
+                document.getElementById("heart-count").textContent = heartCount;
+            } else if (button.button_name === 'star') {
+                starCount = button.count;
+                document.getElementById("star-count").textContent = starCount;
+            }
+        });
+    }
+}
+
+// ボタン押下回数を更新
+async function updateButtonCount(buttonName) {
+    const { data, error } = await supabase
+        .from('button_counts')
+        .update({ count: supabase.raw('count + 1') })
+        .eq('button_name', buttonName);
+
+    if (error) {
+        console.error(error);
+    } else {
+        if (buttonName === 'heart') {
+            heartCount++;
+            document.getElementById("heart-count").textContent = heartCount;
+        } else if (buttonName === 'star') {
+            starCount++;
+            document.getElementById("star-count").textContent = starCount;
+        }
+    }
+}
+
+document.getElementById("heart-btn").addEventListener("click", () => {
+    updateButtonCount('heart');
+});
+
+document.getElementById("star-btn").addEventListener("click", () => {
+    updateButtonCount('star');
+});
 
 // コメントを取得
 async function fetchComments() {
@@ -66,7 +105,7 @@ submitBtn.addEventListener("click", async () => {
 
 // コメントをレンダリング
 function renderComments() {
-    commentsList.innerHTML = ""; // 現在のコメントをクリア
+    commentsList.innerHTML = "";
     const startIndex = (currentPage - 1) * commentsPerPage;
     const endIndex = startIndex + commentsPerPage;
     const currentComments = comments.slice(startIndex, endIndex);
@@ -78,7 +117,7 @@ function renderComments() {
     });
 
     updatePaginationButtons();
-    updatePageNumber(); // ページ番号を更新
+    updatePageNumber();
 }
 
 // ページ番号を更新
@@ -108,5 +147,6 @@ nextBtn.addEventListener("click", () => {
     }
 });
 
-// 初期コメントを取得
+// 初期データを取得
+fetchButtonCounts();
 fetchComments();
