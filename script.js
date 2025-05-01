@@ -41,7 +41,7 @@ async function fetchButtonCounts() {
 async function updateButtonCount(buttonName) {
     const { data, error } = await supabaseClient
         .from('button_counts')
-        .update({ count: supabaseClient.raw('count + 1') })
+        .update({ count: heartCount + 1 }) // 直接カウントを増やす
         .eq('button_name', buttonName);
 
     if (error) {
