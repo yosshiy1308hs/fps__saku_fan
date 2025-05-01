@@ -1,6 +1,6 @@
 const supabaseUrl = 'https://uiguxlwkoaclvugqwomw.supabase.co';
 const supabaseKey = 'your-anon-key';
-const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
 
 let heartCount = 0;
 let starCount = 0;
@@ -18,7 +18,7 @@ const commentsPerPage = 5;
 
 // ボタン押下回数を取得
 async function fetchButtonCounts() {
-    const { data, error } = await supabase
+    const { data, error } = await supabaseClient
         .from('button_counts')
         .select('*');
 
@@ -39,9 +39,9 @@ async function fetchButtonCounts() {
 
 // ボタン押下回数を更新
 async function updateButtonCount(buttonName) {
-    const { data, error } = await supabase
+    const { data, error } = await supabaseClient
         .from('button_counts')
-        .update({ count: supabase.raw('count + 1') })
+        .update({ count: supabaseClient.raw('count + 1') })
         .eq('button_name', buttonName);
 
     if (error) {
@@ -67,7 +67,7 @@ document.getElementById("star-btn").addEventListener("click", () => {
 
 // コメントを取得
 async function fetchComments() {
-    const { data, error } = await supabase
+    const { data, error } = await supabaseClient
         .from('comments')
         .select('*')
         .order('created_at', { ascending: false });
@@ -81,7 +81,7 @@ async function fetchComments() {
 
 // コメントを投稿
 async function addComment(commentText) {
-    const { data, error } = await supabase
+    const { data, error } = await supabaseClient
         .from('comments')
         .insert([{ comment_text: commentText }]);
 
