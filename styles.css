@@ -103,3 +103,20 @@ ul li {
     text-align: center;
     min-width: 40px; /* ページ番号の幅を固定して整列を保つ */
 }
+
+#comments-list {
+    list-style: none;
+    padding: 0;
+    margin: 10px 0;
+}
+
+#comments-list li {
+    background: #f1f1f1;
+    margin: 5px 0;
+    padding: 10px;
+    border-radius: 4px;
+    word-wrap: break-word; /* 長い単語を折り返す */
+    word-break: break-word; /* 長い単語を強制的に折り返す */
+    overflow-wrap: break-word; /* モダンブラウザ向け */
+    white-space: pre-wrap; /* 改行を保持しつつ折り返す */
+}
