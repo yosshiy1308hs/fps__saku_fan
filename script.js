@@ -1,6 +1,6 @@
 const supabaseUrl = 'https://uiguxlwkoaclvugqwomw.supabase.co';
 const supabaseKey = 'your-anon-key';
-const supabase = createClient(supabaseUrl, supabaseKey);
+const supabase = supabase.createClient(supabaseUrl, supabaseKey);
 
 let heartCount = 0;
 let starCount = 0;
