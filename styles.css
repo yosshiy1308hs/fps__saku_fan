@@ -16,8 +16,8 @@ body {
 
 body > div {
     height: 80%;
-    width: 100%;
-    max-width: 600px;
+    width: 100%; /* デフォルトで幅を100%に設定 */
+    max-width: 600px; /* 最大幅を600pxに固定 */
     box-sizing: border-box;
     overflow-y: auto;
     border: 1px solid #ccc;
@@ -126,8 +126,9 @@ textarea {
 /* レスポンシブ対応 */
 @media (max-width: 768px) {
     body > div {
-        height: 90%; /* スマートフォンでは高さを少し増やす */
+        max-width: 90%; /* タブレットサイズでは幅を90%に調整 */
         padding: 15px; /* パディングを調整 */
+        height: 90%; /* スマートフォンでは高さを少し増やす */
     }
 
     h1 {
@@ -150,8 +151,9 @@ textarea {
 
 @media (max-width: 480px) {
     body > div {
-        height: 95%; /* スマートフォン（小画面）では高さをさらに増やす */
+        max-width: 95%; /* スマートフォンサイズでは幅を95%に調整 */
         padding: 10px; /* パディングをさらに調整 */
+        height: 95%; /* スマートフォン（小画面）では高さをさらに増やす */
     }
 
     h1 {
