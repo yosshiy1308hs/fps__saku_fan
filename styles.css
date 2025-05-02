@@ -106,6 +106,14 @@ textarea {
     align-items: center; /* 垂直方向に中央揃え */
 }
 
+/* ボタンを横並びにする */
+#button-container {
+    display: flex;
+    justify-content: center; /* ボタンを中央揃え */
+    gap: 10px; /* ボタン間の間隔を調整 */
+    margin-bottom: 10px; /* 下部余白を追加 */
+}
+
 /* レスポンシブ対応 */
 @media (max-width: 768px) {
     body > div {
