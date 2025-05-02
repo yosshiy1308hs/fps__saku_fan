@@ -39,19 +39,40 @@ async function fetchButtonCounts() {
 
 // ボタン押下回数を更新
 async function updateButtonCount(buttonName) {
+    // 現在のカウントを取得
     const { data, error } = await supabaseClient
         .from('button_counts')
-        .update({ count: heartCount + 1 }) // 直接カウントを増やす
-        .eq('button_name', buttonName);
+        .select('count')
+        .eq('button_name', buttonName)
+        .single();
 
     if (error) {
         console.error(error);
+        return;
+    }
+
+    let currentCount = data.count;
+
+    // カウントが2147483647に達したらリセット
+    if (currentCount >= 2147483647) {
+        currentCount = 0;
+    }
+
+    // カウントを更新
+    const { error: updateError } = await supabaseClient
+        .from('button_counts')
+        .update({ count: currentCount + 1 })
+        .eq('button_name', buttonName);
+
+    if (updateError) {
+        console.error(updateError);
     } else {
+        // フロントエンドの表示を更新
         if (buttonName === 'heart') {
-            heartCount++;
+            heartCount = currentCount + 1;
             document.getElementById("heart-count").textContent = heartCount;
         } else if (buttonName === 'star') {
-            starCount++;
+            starCount = currentCount + 1;
             document.getElementById("star-count").textContent = starCount;
         }
     }
