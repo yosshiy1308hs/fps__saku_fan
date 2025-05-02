@@ -83,6 +83,7 @@ textarea {
     word-break: break-word;
     overflow-wrap: break-word;
     white-space: pre-wrap;
+    text-align: left; /* 左揃えに設定 */
 }
 
 #pagination {
@@ -100,6 +101,9 @@ textarea {
     background-color: #f9f9f9;
     text-align: center;
     min-width: 40px;
+    display: flex; /* フレックスボックスを適用 */
+    justify-content: center; /* 水平方向に中央揃え */
+    align-items: center; /* 垂直方向に中央揃え */
 }
 
 /* レスポンシブ対応 */
