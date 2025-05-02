@@ -95,6 +95,7 @@ textarea {
     justify-content: center;
     gap: 10px;
     margin-top: 10px;
+    box-shadow: none;
 }
 
 #pagination button {
@@ -116,6 +117,7 @@ textarea {
     justify-content: center; /* ボタンを中央揃え */
     gap: 10px; /* ボタン間の間隔を調整 */
     margin-bottom: 10px; /* 下部余白を追加 */
+    box-shadow: none;
 }
 
 /* 押下回数の数字を中央揃えにする */
