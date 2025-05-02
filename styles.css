@@ -1,24 +1,33 @@
+html, body {
+    height: 100%; /* ウィンドウ全体の高さを確保 */
+    margin: 0; /* 余白をなくす */
+    padding: 0;
+    display: flex;
+    justify-content: center; /* コンテンツを中央揃え（オプション） */
+    align-items: center; /* コンテンツを中央揃え（オプション） */
+}
+
 body {
     font-family: 'Arial', sans-serif;
     background-color: #f9f9f9;
     color: #333;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+}
+
+body > div {
+    height: 80%; /* ウィンドウの高さの80%に設定 */
+    width: 100%; /* 必要に応じて幅を調整 */
+    max-width: 600px; /* 必要に応じて最大幅を設定 */
+    box-sizing: border-box; /* パディングを含めた幅の計算 */
+    overflow-y: auto; /* 内容が溢れた場合にスクロールを追加 */
+    border: 1px solid #ccc; /* 見やすいように枠線を追加（オプション） */
+    padding: 20px; /* 内側の余白を設定 */
+    background-color: #fff; /* 背景色を設定（オプション） */
+    border-radius: 8px; /* 角を丸くする（オプション） */
 }
 
 div {
-    background: #fff;
-    border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    max-width: 400px;
-    width: 100%;
     text-align: center;
-    box-sizing: border-box; /* 修正: padding を含めた幅の計算を行う */
 }
 
 h1 {
