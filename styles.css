@@ -72,6 +72,9 @@ textarea {
     margin: 10px 0;
     list-style: none;
     padding: 0;
+    width: 100%; /* 横幅を親要素に合わせる */
+    max-width: 600px; /* 最大幅を固定 */
+    box-sizing: border-box; /* パディングを含めた幅の計算 */
 }
 
 #comments-list li {
