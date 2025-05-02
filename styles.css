@@ -114,6 +114,15 @@ textarea {
     margin-bottom: 10px; /* 下部余白を追加 */
 }
 
+/* 押下回数の数字を中央揃えにする */
+#button-container span {
+    display: flex; /* フレックスボックスを適用 */
+    justify-content: center; /* 水平方向に中央揃え */
+    align-items: center; /* 垂直方向に中央揃え */
+    min-width: 30px; /* 必要に応じて幅を固定 */
+    font-size: 1em; /* 数字のフォントサイズを調整 */
+}
+
 /* レスポンシブ対応 */
 @media (max-width: 768px) {
     body > div {
