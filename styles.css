@@ -147,7 +147,7 @@ textarea {
     }
 
     textarea {
-        height: 60px; /* テキストエリアの高さを縮小 */
+        height: 120px; /* テキストエリアの高さを縮小 */
     }
 
     #comments-list li {
@@ -170,7 +170,7 @@ textarea {
     }
 
     textarea {
-        height: 50px; /* テキストエリアの高さをさらに縮小 */
+        height: 150px;
     }
 
     #comments-list li {
