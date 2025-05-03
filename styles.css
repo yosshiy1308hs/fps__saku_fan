@@ -69,7 +69,7 @@ textarea {
 
 #comments-list {
     height: 100%; /* ulの高さを親要素に合わせる */
-    /* max-height: 300px; /* 必要に応じて最大高さを設定 */
+    max-height: 300px; /* 必要に応じて最大高さを設定 */
     overflow-y: auto; /* スクロールを許可 */
     list-style: none;
     padding: 0;
@@ -147,7 +147,7 @@ textarea {
     }
 
     textarea {
-        height: 120px !important;
+        height: 120px;
     }
 
     #comments-list li {
@@ -170,7 +170,7 @@ textarea {
     }
 
     textarea {
-        height: 150px !important;
+        height: 150px;
     }
 
     #comments-list li {
