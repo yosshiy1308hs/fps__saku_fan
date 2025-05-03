@@ -26,7 +26,7 @@ body > div {
     border-radius: 8px;
     display: flex;
     flex-direction: column;
-    margin: 0; /* 中央揃え */
+    margin: 0 auto; /* 中央揃え */
 }
 
 div {
@@ -69,7 +69,7 @@ textarea {
 
 #comments-list {
     height: 100%; /* ulの高さを親要素に合わせる */
-    max-height: 300px; /* 必要に応じて最大高さを設定 */
+    /* max-height: 300px; /* 必要に応じて最大高さを設定 */
     overflow-y: auto; /* スクロールを許可 */
     list-style: none;
     padding: 0;
