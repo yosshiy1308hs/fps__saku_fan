@@ -147,7 +147,7 @@ textarea {
     }
 
     textarea {
-        height: 120px; /* テキストエリアの高さを縮小 */
+        height: 120px;
     }
 
     #comments-list li {
