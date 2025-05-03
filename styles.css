@@ -147,7 +147,7 @@ textarea {
     }
 
     textarea {
-        height: 120px;
+        height: 120px !important;
     }
 
     #comments-list li {
@@ -170,7 +170,7 @@ textarea {
     }
 
     textarea {
-        height: 150px;
+        height: 150px !important;
     }
 
     #comments-list li {
