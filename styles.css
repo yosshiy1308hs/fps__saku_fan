@@ -12,8 +12,7 @@ html, body {
 }
 
 .container {
-    width: 100%;
-    max-width: 600px;
+    width: 600px; /* 横幅を固定 */
     height: 80%;
     padding: 20px;
     background-color: #fff;
@@ -116,7 +115,7 @@ textarea {
 /* レスポンシブ対応 */
 @media (max-width: 768px) {
     .container {
-        width: 90%;
+        width: 90%; /* タブレットサイズでは幅を90%に調整 */
         padding: 15px;
     }
 
@@ -140,7 +139,7 @@ textarea {
 
 @media (max-width: 480px) {
     .container {
-        width: 95%;
+        width: 95%; /* スマートフォンサイズでは幅を95%に調整 */
         padding: 10px;
     }
 
