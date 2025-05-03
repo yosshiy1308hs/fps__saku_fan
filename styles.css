@@ -68,26 +68,28 @@ textarea {
 }
 
 #comments-list {
-    flex-grow: 1;
-    overflow-y: auto;
-    margin: 10px 0;
+    height: 100%; /* ulの高さを親要素に合わせる */
+    max-height: 300px; /* 必要に応じて最大高さを設定 */
+    overflow-y: auto; /* スクロールを許可 */
     list-style: none;
     padding: 0;
-    width: 100%; /* 横幅を親要素に合わせる */
-    max-width: 600px; /* 最大幅を固定 */
-    box-sizing: border-box; /* パディングを含めた幅の計算 */
+    margin: 0;
+    display: flex;
+    flex-direction: column; /* 子要素を縦方向に並べる */
+    justify-content: space-between; /* li要素を均等に配置 */
 }
 
 #comments-list li {
+    flex-grow: 1; /* 各li要素が均等に高さを取る */
+    padding: 10px;
     background: #f1f1f1;
     margin: 5px 0;
-    padding: 10px;
     border-radius: 4px;
     word-wrap: break-word;
     word-break: break-word;
     overflow-wrap: break-word;
     white-space: pre-wrap;
-    text-align: left; /* 左揃えに設定 */
+    text-align: left;
 }
 
 #pagination {
