@@ -1,16 +1,20 @@
 const supabaseUrl = 'https://uiguxlwkoaclvugqwomw.supabase.co';
-const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVpZ3V4bHdrb2FjbHZ1Z3F3b213Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDU4MzM1NTAsImV4cCI6MjA2MTQwOTU1MH0.0Uz4BbXvOWCx8EHxN6whml3GprdYLeTpVevB6pM3fBk';
+const supabaseKey = 'your-anon-key';
 const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
 
 let heartCount = 0;
 let starCount = 0;
 
-const commentsList = document.getElementById("comments-list");
-const commentBox = document.getElementById("comment-box");
-const submitBtn = document.getElementById("submit-btn");
-const prevBtn = document.getElementById("prev-btn");
-const nextBtn = document.getElementById("next-btn");
-const pageNumber = document.getElementById("page-number");
+const elements = {
+    commentsList: document.getElementById("comments-list"),
+    commentBox: document.getElementById("comment-box"),
+    submitBtn: document.getElementById("submit-btn"),
+    prevBtn: document.getElementById("prev-btn"),
+    nextBtn: document.getElementById("next-btn"),
+    pageNumber: document.getElementById("page-number"),
+    heartCount: document.getElementById("heart-count"),
+    starCount: document.getElementById("star-count"),
+};
 
 let comments = [];
 let currentPage = 1;
@@ -18,65 +22,131 @@ const commentsPerPage = 5;
 
 // ボタン押下回数を取得
 async function fetchButtonCounts() {
-    const { data, error } = await supabaseClient
-        .from('button_counts')
-        .select('*');
+    try {
+        const { data, error } = await supabaseClient.from('button_counts').select('*');
+        if (error) throw error;
 
-    if (error) {
-        console.error(error);
-    } else {
         data.forEach(button => {
             if (button.button_name === 'heart') {
                 heartCount = button.count;
-                document.getElementById("heart-count").textContent = heartCount;
+                elements.heartCount.textContent = heartCount;
             } else if (button.button_name === 'star') {
                 starCount = button.count;
-                document.getElementById("star-count").textContent = starCount;
+                elements.starCount.textContent = starCount;
             }
         });
+    } catch (error) {
+        console.error('Error fetching button counts:', error);
     }
 }
 
 // ボタン押下回数を更新
 async function updateButtonCount(buttonName) {
-    // 現在のカウントを取得
-    const { data, error } = await supabaseClient
-        .from('button_counts')
-        .select('count')
-        .eq('button_name', buttonName)
-        .single();
+    try {
+        const { data, error } = await supabaseClient
+            .from('button_counts')
+            .select('count')
+            .eq('button_name', buttonName)
+            .single();
+        if (error) throw error;
 
-    if (error) {
-        console.error(error);
-        return;
-    }
+        let currentCount = data.count >= 2147483647 ? 0 : data.count;
 
-    let currentCount = data.count;
+        const { error: updateError } = await supabaseClient
+            .from('button_counts')
+            .update({ count: currentCount + 1 })
+            .eq('button_name', buttonName);
+        if (updateError) throw updateError;
 
-    // カウントが2147483647に達したらリセット
-    if (currentCount >= 2147483647) {
-        currentCount = 0;
-    }
-
-    // カウントを更新
-    const { error: updateError } = await supabaseClient
-        .from('button_counts')
-        .update({ count: currentCount + 1 })
-        .eq('button_name', buttonName);
-
-    if (updateError) {
-        console.error(updateError);
-    } else {
         // フロントエンドの表示を更新
         if (buttonName === 'heart') {
             heartCount = currentCount + 1;
-            document.getElementById("heart-count").textContent = heartCount;
+            elements.heartCount.textContent = heartCount;
         } else if (buttonName === 'star') {
             starCount = currentCount + 1;
-            document.getElementById("star-count").textContent = starCount;
+            elements.starCount.textContent = starCount;
         }
+    } catch (error) {
+        console.error('Error updating button count:', error);
     }
 }
+
+// コメントを取得
+async function fetchComments() {
+    try {
+        const { data, error } = await supabaseClient
+            .from('comments')
+            .select('*')
+            .order('created_at', { ascending: false });
+        if (error) throw error;
+
+        comments = data.map(item => item.comment_text);
+        renderComments();
+    } catch (error) {
+        console.error('Error fetching comments:', error);
+    }
+}
+
+// コメントを投稿
+async function addComment(commentText) {
+    try {
+        const { error } = await supabaseClient
+            .from('comments')
+            .insert([{ comment_text: commentText }]);
+        if (error) throw error;
+
+        comments.unshift(commentText); // 新しいコメントを先頭に追加
+        renderComments();
+    } catch (error) {
+        console.error('Error adding comment:', error);
+    }
+}
+
+// コメントをレンダリング
+function renderComments() {
+    elements.commentsList.innerHTML = "";
+    const startIndex = (currentPage - 1) * commentsPerPage;
+    const endIndex = startIndex + commentsPerPage;
+    const currentComments = comments.slice(startIndex, endIndex);
+
+    currentComments.forEach(comment => {
+        const li = document.createElement("li");
+        li.textContent = comment;
+        elements.commentsList.appendChild(li);
+    });
+
+    updatePagination();
+}
+
+// ページネーションの更新
+function updatePagination() {
+    elements.pageNumber.textContent = currentPage;
+    elements.prevBtn.disabled = currentPage === 1;
+    elements.nextBtn.disabled = currentPage * commentsPerPage >= comments.length;
+}
+
+// イベントリスナーの設定
+elements.submitBtn.addEventListener("click", () => {
+    const comment = elements.commentBox.value.trim();
+    if (comment) {
+        addComment(comment);
+        elements.commentBox.value = "";
+    }
+});
+
+elements.prevBtn.addEventListener("click", () => {
+    if (currentPage > 1) {
+        currentPage--;
+        renderComments();
+    }
+});
+
+elements.nextBtn.addEventListener("click", () => {
+    if (currentPage * commentsPerPage < comments.length) {
+        currentPage++;
+        renderComments();
+    }
+});
 
 document.getElementById("heart-btn").addEventListener("click", () => {
     updateButtonCount('heart');
@@ -84,86 +154,6 @@ document.getElementById("heart-btn").addEventListener("click", () => {
 
 document.getElementById("star-btn").addEventListener("click", () => {
     updateButtonCount('star');
-});
-
-// コメントを取得
-async function fetchComments() {
-    const { data, error } = await supabaseClient
-        .from('comments')
-        .select('*')
-        .order('created_at', { ascending: false });
-
-    if (error) console.error(error);
-    else {
-        comments = data.map(item => item.comment_text);
-        renderComments();
-    }
-}
-
-// コメントを投稿
-async function addComment(commentText) {
-    const { data, error } = await supabaseClient
-        .from('comments')
-        .insert([{ comment_text: commentText }]);
-
-    if (error) console.error(error);
-    else {
-        comments.push(commentText);
-        renderComments();
-    }
-}
-
-// コメントを追加
-submitBtn.addEventListener("click", async () => {
-    const comment = commentBox.value.trim();
-    if (comment) {
-        await addComment(comment);
-        commentBox.value = "";
-    }
-});
-
-// コメントをレンダリング
-function renderComments() {
-    commentsList.innerHTML = "";
-    const startIndex = (currentPage - 1) * commentsPerPage;
-    const endIndex = startIndex + commentsPerPage;
-    const currentComments = comments.slice(startIndex, endIndex);
-
-    currentComments.forEach((comment) => {
-        const li = document.createElement("li");
-        li.textContent = comment;
-        commentsList.appendChild(li);
-    });
-
-    updatePaginationButtons();
-    updatePageNumber();
-}
-
-// ページ番号を更新
-function updatePageNumber() {
-    pageNumber.textContent = currentPage;
-}
-
-// ページングボタンの状態を更新
-function updatePaginationButtons() {
-    prevBtn.disabled = currentPage === 1;
-    nextBtn.disabled = currentPage * commentsPerPage >= comments.length;
-}
-
-// 前のページ
-prevBtn.addEventListener("click", () => {
-    if (currentPage > 1) {
-        currentPage--;
-        renderComments();
-    }
-});
-
-// 次のページ
-nextBtn.addEventListener("click", () => {
-    if (currentPage * commentsPerPage < comments.length) {
-        currentPage++;
-        renderComments();
-    }
 });
 
 // 初期データを取得
