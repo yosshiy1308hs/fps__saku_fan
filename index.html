@@ -21,15 +21,10 @@
                 <span id="page-number">1</span>
                 <button id="next-btn" disabled>次へ</button>
             </div>
-        </div>
-        <div id="auth-container">
-            <h2>ログイン</h2>
-            <form id="login-form">
-                <input type="email" id="email" placeholder="メールアドレス" required />
-                <input type="password" id="password" placeholder="パスワード" required />
-                <button type="submit">ログイン</button>
-            </form>
-            <p id="auth-message"></p>
+            <div id="auth-navigation">
+                <a href="login.html" class="auth-btn">ログイン</a>
+                <a href="signup.html" class="auth-btn">サインアップ</a>
+            </div>
         </div>
         <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
         <script type="module" src="script.js"></script>

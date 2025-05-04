@@ -150,6 +150,21 @@ textarea {
     color: red;
 }
 
+.auth-btn {
+    display: inline-block;
+    margin: 10px 5px;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 4px;
+    text-align: center;
+}
+
+.auth-btn:hover {
+    background-color: #0056b3;
+}
+
 /* レスポンシブ対応 */
 @media (max-width: 768px) {
     .container {
