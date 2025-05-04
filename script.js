@@ -160,50 +160,6 @@ document.getElementById("star-btn").addEventListener("click", () => {
 const loginForm = document.getElementById("login-form");
 const authMessage = document.getElementById("auth-message");
 
-// ログイン処理
-loginForm.addEventListener("submit", async (event) => {
-    event.preventDefault(); // フォームのデフォルト動作を無効化
-
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
-
-    try {
-        const { user, error } = await supabaseClient.auth.signInWithPassword({
-            email,
-            password,
-        });
-
-        if (error) {
-            authMessage.textContent = "ログインに失敗しました: " + error.message;
-        } else {
-            authMessage.textContent = "ログイン成功！";
-            console.log("ログインユーザー:", user);
-            // 必要に応じてリダイレクト処理を追加
-        }
-    } catch (err) {
-        console.error("ログインエラー:", err);
-        authMessage.textContent = "エラーが発生しました。";
-    }
-});
-
-// サインアップ処理
-async function signUp(email, password) {
-    try {
-        const { user, error } = await supabaseClient.auth.signUp({
-            email,
-            password,
-        });
-
-        if (error) {
-            console.error("サインアップエラー:", error.message);
-        } else {
-            console.log("サインアップ成功:", user);
-        }
-    } catch (err) {
-        console.error("サインアップ中にエラーが発生しました:", err);
-    }
-}
-
 // 初期データを取得
 fetchButtonCounts();
 fetchComments();
