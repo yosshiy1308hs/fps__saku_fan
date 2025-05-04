@@ -171,6 +171,7 @@ textarea {
     right: 10px; /* ページ右端からの距離 */
     display: flex;
     gap: 10px; /* ボタン間の間隔 */
+    align-items: center;
 }
 
 .auth-btn {
@@ -186,6 +187,14 @@ textarea {
 
 .auth-btn:hover {
     background-color: #0056b3;
+}
+
+.user-email {
+    font-size: 0.9em;
+    color: #333;
+    background-color: #f1f1f1;
+    padding: 5px 10px;
+    border-radius: 4px;
 }
 
 /* レスポンシブ対応 */

@@ -158,6 +158,32 @@ document.getElementById("star-btn").addEventListener("click", () => {
 const loginForm = document.getElementById("login-form");
 const authMessage = document.getElementById("auth-message");
 
+// ログイン中のユーザー情報を取得して表示
+async function displayLoggedInUser() {
+    const { data: { user }, error } = await supabaseClient.auth.getUser();
+    if (error) {
+        console.error('Error fetching user:', error);
+        return;
+    }
+
+    const authNavigation = document.getElementById("auth-navigation");
+    if (user) {
+        // ユーザーがログインしている場合、メールアドレスを表示
+        authNavigation.innerHTML = `<span class="user-email">${user.email}</span>`;
+    } else {
+        // ユーザーがログインしていない場合、ログイン・サインアップボタンを表示
+        authNavigation.innerHTML = `
+            <a href="login.html" class="auth-btn">ログイン</a>
+            <a href="signup.html" class="auth-btn">サインアップ</a>
+        `;
+    }
+}
+
+// ページ読み込み時にログイン状態を確認
+document.addEventListener("DOMContentLoaded", () => {
+    displayLoggedInUser();
+});
+
 // 初期データを取得
 fetchButtonCounts();
 fetchComments();
